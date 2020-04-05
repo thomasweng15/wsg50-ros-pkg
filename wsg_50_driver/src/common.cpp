@@ -171,7 +171,7 @@ void quit( const char *reason )
 }
 
 
-const char * getStateValues( unsigned char *b ){
+const char * getStateValues( unsigned char *b, char * resp ){
 
 	/*
 	unsigned char aux[4]; 
@@ -189,7 +189,7 @@ const char * getStateValues( unsigned char *b ){
 	dbgPrint("b[5] = 0x%x\n", b[5]);
 	*/
 
-	char resp[1024] = "| ";
+	// char resp[1024] = "| ";
 
 	if (b[2] & 0x1){	// D0 ==> LSB
 		//dbgPrint("Fingers Referenced.\n");
@@ -288,7 +288,7 @@ const char * getStateValues( unsigned char *b ){
 	
 	// D31 ==> MSB
 
-	//dbgPrint("%s\n", resp);
+	// dbgPrint("%s\n", resp);
 	return resp;
 }
 

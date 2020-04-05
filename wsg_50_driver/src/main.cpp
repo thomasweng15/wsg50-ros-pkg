@@ -266,7 +266,9 @@ void timer_cb(const ros::TimerEvent& ev)
 	info.speed = 0.0;
 
     if (g_mode_polling) {
-        const char * state = systemState();
+        char state[1024] = "| ";
+        systemState(state);
+        // ROS_INFO("%s", state);
         if (!state)
             return;
         info.state_text = std::string(state);
@@ -338,7 +340,7 @@ void timer_cb(const ros::TimerEvent& ev)
 
 	g_pub_joint.publish(joint_states);
 
-	// printf("Timer, last duration: %6.1f\n", ev.profile.last_duration.toSec() * 1000.0);
+	printf("Timer, last duration: %6.1f\n", ev.profile.last_duration.toSec() * 1000.0);
 }
 
 
@@ -559,7 +561,7 @@ int main( int argc, char **argv )
        res_con = cmd_connect_udp(local_port, ip.c_str(), port );
 
    if (res_con == 0 ) {
-        ROS_INFO("Gripper connection stablished");
+        ROS_INFO("Gripper connection established");
 
 		// Services
         ros::ServiceServer moveSS, graspSS, releaseSS, homingSS, stopSS, ackSS, incrementSS, setAccSS, setForceSS;

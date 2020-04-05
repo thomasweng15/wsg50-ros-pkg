@@ -368,7 +368,8 @@ int script_measure_move (unsigned char cmd_type, float cmd_width, float cmd_spee
 		unsigned char resp_state[6] = {0,0,0,0,0,0};
 		resp_state[2] = resp[2];
 		info.state = resp[2];					 off+=1;
-		info.state_text = std::string(getStateValues(resp_state));
+		char * resp1 = "| ";
+		info.state_text = std::string(getStateValues(resp_state, resp1));
 		info.position = convert(&resp[off]);     off+=4;
 		info.speed = convert(&resp[off]);        off+=4;
 		info.f_motor = convert(&resp[off]);      off+=4;
@@ -505,7 +506,7 @@ int doTare( void )
 ///////////////////
 
 
-const char * systemState( void ) 
+const char * systemState( char * resp1 ) 
 {
 	status_t status;
 	int res;
@@ -534,19 +535,22 @@ const char * systemState( void )
 	dbgPrint("       resp[2]: %x\n", resp[4]);
 	dbgPrint("MSB -> resp[3]: %x\n", resp[5]);
 	*/
+	dbgPrint("Getting state values\n");
+	// char resp1[1024] = "| ";
+	getStateValues(resp, resp1);
+	// dbgPrint("%s\n", resp1);
+	return resp1;
 
-	return getStateValues(resp);
+	// if ( status != E_SUCCESS )
+	// {
+	// 	dbgPrint( "Command GET SYSTEM STATE not successful: %s\n", status_to_str( status ) );
+	// 	free( resp );
+	// 	return 0;
+	// }
 
-	if ( status != E_SUCCESS )
-	{
-		dbgPrint( "Command GET SYSTEM STATE not successful: %s\n", status_to_str( status ) );
-		free( resp );
-		return 0;
-	}
+	// free( resp );
 
-	free( resp );
-
-    return 0;
+    // return 0;
 
 	//return (int) resp[2]; MBJ
 }
